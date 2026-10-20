@@ -19,6 +19,7 @@ function el(tag, attrs = {}, ...hijos) {
   for (const h of hijos.flat()) { if (h == null || h === false) continue; n.append(h.nodeType ? h : document.createTextNode(String(h))); }
   return n;
 }
+const poner = (nodo, ...h) => nodo.replaceChildren(...h.flat().filter(x => x != null && x !== false));
 const colorParte = p => getComputedStyle(document.documentElement).getPropertyValue("--p" + p).trim();
 const fmtCoord = (lat, lon) => `${Math.abs(lat).toFixed(2)}° ${lat >= 0 ? "N" : "S"}  ${Math.abs(lon).toFixed(2)}° ${lon >= 0 ? "E" : "O"}`;
 const guardar = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} };
@@ -143,7 +144,7 @@ function cabecera(etq, titulo, sub) {
 function vistaCapitulo(n) {
   const cap = capitulos.get(n); const lista = casos.filter(c => c.cap === n);
   const conAct = lista.filter(c => c.actualizacion).length;
-  ficha.replaceChildren(
+  poner(ficha, 
     cabecera(`Parte ${["I", "II", "III", "IV", "V"][cap.parte - 1]} · Capítulo ${n} · pp. ${cap.paginas}`, cap.titulo),
     el("div", { class: "cifras" },
       el("div", {}, el("strong", {}, String(lista.length)), "casos en el globo"),
@@ -170,7 +171,7 @@ function vistaCaso(c) {
     el("h3", {}, "Actualización posterior al manual"), el("p", {}, c.actualizacion.texto),
     c.actualizacion.fuentes?.length ? el("ul", {}, c.actualizacion.fuentes.map(f => el("li", {}, f.cita, " ", f.doi ? el("a", { href: "https://doi.org/" + f.doi, target: "_blank", rel: "noopener" }, "doi:" + f.doi) : null))) : null) : null;
   const navs = navegacionCaso(c);
-  ficha.replaceChildren(
+  poner(ficha, 
     cabecera(`Capítulo ${c.cap} · caso`, c.nombre, c.lugar),
     el("div", { class: "conceptos", "aria-label": "Conceptos" }, (c.conceptos || []).map(k => el("span", { class: "concepto" }, k))),
     meta,
@@ -196,7 +197,7 @@ function navegacionCaso(c) {
 function vistaGlosario(n) {
   estado.vista = "glosario";
   const cap = capitulos.get(n);
-  ficha.replaceChildren(
+  poner(ficha, 
     cabecera(`Capítulo ${n} · glosario`, "Conceptos clave", "Definiciones de redacción propia; la página remite al manual."),
     el("dl", { class: "glosario" }, cap.glosario.map(g => el("div", {}, el("dt", {}, g.t, el("span", { class: "mono" }, "p. " + g.p)), el("dd", {}, g.d)))),
     el("div", { class: "nav-ficha" }, el("button", { class: "boton", type: "button", onclick: () => abrirCapitulo(n) }, "Volver al capítulo"), el("button", { class: "boton", type: "button", onclick: () => vistaTest(n) }, "Autoevaluación")));
@@ -229,7 +230,7 @@ function vistaTest(n) {
     resultado.textContent = `${ok} de ${cap.test.length} respuestas correctas. Revise las explicaciones y la página indicada.`;
   });
   form.addEventListener("reset", () => { form.querySelectorAll(".opcion").forEach(l => l.classList.remove("correcta", "incorrecta")); form.querySelectorAll(".explicacion").forEach(e => e.hidden = true); resultado.textContent = ""; });
-  ficha.replaceChildren(cabecera(`Capítulo ${n} · autoevaluación`, "Compruebe lo aprendido", `${cap.test.length} preguntas de opción múltiple`), form,
+  poner(ficha, cabecera(`Capítulo ${n} · autoevaluación`, "Compruebe lo aprendido", `${cap.test.length} preguntas de opción múltiple`), form,
     el("div", { class: "nav-ficha" }, el("button", { class: "boton", type: "button", onclick: () => abrirCapitulo(n) }, "Volver al capítulo")));
   $("#ficha-titulo").focus({ preventScroll: true });
 }
