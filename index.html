@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<title>Atlas etnográfico</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  Lectura didáctica: atlas interactivo 3D para alumnado universitario de Antropología Social y Cultural,
+  tono editorial-cartográfico, orientado al aprendizaje autónomo y al uso en el aula a partir de
+  Miller (2011), Antropología cultural. Arquitectura modular: núcleo (js/) + un módulo por parte (modulos/).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+
+<header class="barra">
+  <div class="marca">
+    <h1>Atlas etnográfico</h1>
+    <span>Antropología cultural, de Barbara Miller, en el globo</span>
+  </div>
+  <div class="acciones">
+    <div class="buscador">
+      <label for="buscar" class="etiqueta" hidden>Buscar</label>
+      <input id="buscar" type="search" placeholder="Buscar pueblo, lugar, autor o concepto" aria-label="Buscar casos por pueblo, lugar, autor o concepto" autocomplete="off">
+    </div>
+    <button id="btn-presentar" class="boton" type="button" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"></rect><path d="M8 20h8M12 16v4"></path></svg>
+      <span>Presentar</span>
+    </button>
+  </div>
+</header>
+
+<main class="app">
+  <nav class="indice" aria-label="Índice del manual">
+    <div>
+      <p class="etiqueta">Índice del manual</p>
+    </div>
+    <ul class="partes" id="partes"></ul>
+    <section class="bloque-casos" aria-labelledby="titulo-casos">
+      <p class="etiqueta" id="titulo-casos">Casos</p>
+      <ul class="lista-casos" id="lista-casos"></ul>
+    </section>
+  </nav>
+
+  <section class="escena" aria-label="Globo de casos etnográficos">
+    <div id="globo"></div>
+    <div class="carga" id="carga">Cargando el globo…</div>
+    <div class="rotulo" id="rotulo" hidden></div>
+    <div class="lectura" id="lectura" aria-hidden="true"></div>
+    <div class="leyenda" id="leyenda"></div>
+    <div class="recorrido-barra" id="recorrido" hidden></div>
+  </section>
+
+  <aside class="ficha" id="ficha" aria-live="polite" aria-label="Ficha"></aside>
+</main>
+
+<footer class="pie">
+  <span id="fuente"></span>
+  <span>Cartografía: Natural Earth (dominio público). Recurso educativo <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.es" rel="license noopener" target="_blank">CC BY-NC 4.0</a></span>
+</footer>
+
+<!-- Datos: primero el manifiesto, después un script por cada parte disponible -->
+<script src="js/tierra.js"></script>
+<script src="modulos/manifiesto.js"></script>
+<script src="modulos/parte-1.js"></script>
+<!-- <script src="modulos/parte-2.js"></script>  ← añadir aquí las partes siguientes -->
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
