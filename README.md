@@ -1,4 +1,4 @@
-# Atlas etnográfico (v0.3, Partes I-III)
+# Atlas etnográfico (v0.4, Partes I-IV)
 
 Recurso web 3D (Three.js 0.160.0) basado en Miller, B. (2011). *Antropología cultural* (5.ª ed.). Pearson Educación.
 

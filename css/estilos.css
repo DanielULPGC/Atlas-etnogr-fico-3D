@@ -141,13 +141,13 @@ p { margin: 0; }
 }
 .rotulo small { display: block; font-family: var(--f-mono); font-weight: 400; color: var(--muted); font-size: 0.6875rem; }
 .leyenda {
-  position: absolute; left: var(--s-4); top: var(--s-4); display: flex; flex-wrap: wrap; gap: 4px 12px; max-width: calc(100% - 32px);
+  position: absolute; left: var(--s-4); top: var(--s-4); display: flex; flex-wrap: wrap; gap: 4px 12px; max-width: calc(100% - 280px);
   font-family: var(--f-display); font-size: var(--t-xs); color: var(--muted);
   background: color-mix(in srgb, var(--bg) 85%, transparent); padding: 6px 10px; border-radius: var(--r);
 }
 .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
 .lectura {
-  position: absolute; right: var(--s-4); top: var(--s-4); text-align: right; font-size: var(--t-xs); color: var(--muted);
+  position: absolute; right: var(--s-4); top: var(--s-4); text-align: right; max-width: 230px; font-size: var(--t-xs); color: var(--muted);
   background: color-mix(in srgb, var(--bg) 85%, transparent); padding: 6px 10px; border-radius: var(--r);
 }
 .recorrido-barra {
@@ -230,6 +230,7 @@ body.modo-presentacion .ficha-cab h2 { font-size: 2.4rem; }
   .barra .acciones { margin-left: 0; width: 100%; }
   .buscador { flex: 1; }
   .lectura { display: none; }
+  .leyenda { max-width: calc(100% - 32px); }
   body.modo-presentacion .app { display: flex; }
 }
 @media (min-width: 1440px) {
