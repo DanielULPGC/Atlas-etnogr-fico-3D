@@ -1,4 +1,4 @@
-# Atlas etnográfico (v1.0, manual completo: Partes I-V, 183 casos)
+# Atlas etnográfico (v1.1, manual completo + línea temporal del cap. 2 correlacionada con «Ser humanos»)
 
 Recurso web 3D (Three.js 0.160.0) basado en Miller, B. (2011). *Antropología cultural* (5.ª ed.). Pearson Educación.
 
@@ -24,3 +24,8 @@ Three.js y las fuentes se cargan desde CDN (jsDelivr, Google Fonts): hace falta 
 - `aprox: true`: ubicación inferida cuando el manual no precisa el lugar.
 
 Licencia: CC BY-NC 4.0 (contenidos propios). Cartografía: Natural Earth (dominio público).
+
+## Línea temporal y correlación con «Ser humanos» (v1.1)
+- `js/cronologia.js`: vista SVG en escala logarítmica para los capítulos declarados en `ATLAS.cronologia`.
+- `modulos/correlaciones.js`: edades numéricas de los casos del cap. 2 (manual y datación actual) y enlaces a «Ser humanos» (anclas `#e-<especie>` y `#sNN`). Copia las edades de especie y etapas de «Ser humanos» v0.8: si ese recurso cambia, actualice este fichero.
+- Enlace directo: añada `#cronologia` a la dirección del atlas para abrirla.

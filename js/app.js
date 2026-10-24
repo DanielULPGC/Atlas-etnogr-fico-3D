@@ -3,6 +3,7 @@
  * Todo el contenido llega de ATLAS.modulos; añadir una parte no exige tocar este fichero.
  */
 import { crearGlobo } from "./globo.js";
+import { crearCronologia } from "./cronologia.js";
 
 const A = window.ATLAS;
 const $ = s => document.querySelector(s);
@@ -67,6 +68,11 @@ function pintarRotulo() {
     rotulo.replaceChildren(c.nombre, el("small", {}, `Cap. ${c.cap} · p. ${c.p}`));
   }
 }
+
+/* Línea temporal (capítulos con ATLAS.cronologia) */
+const crono = crearCronologia($("#cronologia"), { porId, onCaso: id => abrirCaso(id, { volar: true }) });
+function abrirCronologia(n) { if (estado.cap !== n) abrirCapitulo(n); crono.abrir(n); if (estado.caso) crono.marcar(estado.caso); }
+const SH = () => window.ATLAS.correlaciones?.serHumanos;
 
 /* Tema: el globo lee los tokens CSS */
 const refrescarTema = () => { if (!globo) return; globo.actualizarTema(); globo.recolorear(c => colorParte(porId.get(c.id).parte)); pintarLeyenda(); };
@@ -155,7 +161,11 @@ function vistaCapitulo(n) {
     el("div", { class: "nav-ficha" },
       el("button", { class: "boton primario", type: "button", onclick: () => iniciarRecorrido(n) }, "Iniciar recorrido"),
       el("button", { class: "boton", type: "button", onclick: () => vistaGlosario(n) }, "Glosario"),
-      el("button", { class: "boton", type: "button", onclick: () => vistaTest(n) }, "Autoevaluación"))
+      el("button", { class: "boton", type: "button", onclick: () => vistaTest(n) }, "Autoevaluación"),
+      crono.disponible(n) ? el("button", { class: "boton", type: "button", onclick: () => abrirCronologia(n) }, "Línea temporal") : null),
+    crono.disponible(n) && SH() ? el("section", { class: "seccion" }, el("h3", {}, "Correlación con «Ser humanos»"),
+      el("p", { class: "critica" }, "La línea temporal sitúa los casos de este capítulo junto a las especies y etapas de expansión del museo 3D «Ser humanos». Cada caso relacionado enlaza con su especie o sala."),
+      el("p", {}, el("a", { href: SH().url, target: "_blank", rel: "noopener" }, `Abrir «${SH().nombre}»`))) : null
   );
   $("#lectura").replaceChildren(el("span", { class: "etiqueta" }, "Capítulo " + n), el("br"), el("span", { class: "mono" }, `${lista.length} casos`));
 }
@@ -179,9 +189,24 @@ function vistaCaso(c) {
     el("section", { class: "seccion" }, el("h3", {}, "Para pensar"), el("p", { class: "pensar" }, c.pensar)),
     act,
     c.critica ? el("section", { class: "seccion" }, el("h3", {}, "Lectura crítica"), el("p", { class: "critica" }, c.critica)) : null,
+    seccionSerHumanos(c),
     navs
   );
   $("#lectura").replaceChildren(el("span", { class: "etiqueta" }, c.nombre), el("br"), el("span", { class: "mono" }, fmtCoord(c.lat, c.lon)));
+}
+
+function seccionSerHumanos(c) {
+  const sh = SH(), rel = sh?.casos?.[c.id], conCrono = !!window.ATLAS.cronologia?.[c.cap]?.casos?.[c.id];
+  if (!rel && !conCrono) return null;
+  const nombreEsp = id => sh.especies.find(e => e.id === id)?.corto || id;
+  const enlaces = rel ? [
+    ...rel.especies.map(id => el("li", {}, el("a", { href: `${sh.url}#e-${id}`, target: "_blank", rel: "noopener" }, `Especie: ${nombreEsp(id)}`))),
+    ...rel.salas.map(id => el("li", {}, el("a", { href: `${sh.url}#${id}`, target: "_blank", rel: "noopener" }, `Sala ${Number(id.slice(1))}: ${sh.salas[id] || ""}`)))
+  ] : [];
+  return el("section", { class: "seccion" }, el("h3", {}, "Correlación"),
+    enlaces.length ? el("p", { class: "critica" }, "En «Ser humanos», museo 3D sobre los comienzos de la cultura:") : null,
+    enlaces.length ? el("ul", { class: "enlaces-sh" }, enlaces) : null,
+    conCrono ? el("div", { class: "nav-ficha" }, el("button", { class: "boton", type: "button", onclick: () => { crono.abrir(c.cap); crono.marcar(c.id); } }, "Ver en la línea temporal")) : null);
 }
 
 function navegacionCaso(c) {
@@ -238,6 +263,7 @@ function vistaTest(n) {
 /* ---------- Navegación ---------- */
 function abrirCapitulo(n, { volar = false } = {}) {
   terminarRecorrido();
+  if (crono.abierta() && crono.capitulo() !== n) crono.cerrar();
   estado.cap = n; estado.caso = null; estado.vista = "capitulo"; estado.busqueda = ""; $("#buscar").value = "";
   if (globo) globo.marcar(null);
   pintarIndice(); vistaCapitulo(n);
@@ -255,6 +281,7 @@ function abrirCaso(id, { volar = false } = {}) {
   if (estado.recorrido && !estado.recorrido.ids.includes(id)) terminarRecorrido();
   if (c.cap !== estado.cap && !estado.busqueda) { estado.cap = c.cap; pintarIndice(); }
   estado.caso = id; estado.vista = "caso";
+  if (crono.abierta()) { if (crono.capitulo() === c.cap) crono.marcar(id); else crono.cerrar(); }
   if (globo) { globo.marcar(id); if (volar) globo.enfocar(c.lat, c.lon); }
   pintarListaCasos(); vistaCaso(c); actualizarRecorrido();
   if (window.matchMedia("(max-width: 900px)").matches) ficha.scrollIntoView({ block: "start", behavior: "smooth" });
@@ -291,6 +318,7 @@ function presentar(on) {
 }
 $("#btn-presentar").addEventListener("click", () => presentar(!document.body.classList.contains("modo-presentacion")));
 document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape" && crono.abierta()) { crono.cerrar(); return; }
   if (ev.key === "Escape" && document.body.classList.contains("modo-presentacion")) presentar(false);
   if (estado.recorrido && (ev.key === "ArrowRight" || ev.key === "ArrowLeft") && !/input|textarea/i.test(document.activeElement.tagName)) {
     const r = estado.recorrido, i = r.ids.indexOf(estado.caso), j = i + (ev.key === "ArrowRight" ? 1 : -1);
@@ -306,3 +334,4 @@ abrirCapitulo(capitulos.has(capInicial) ? capInicial : [...capitulos.keys()][0])
 if (leer("atlas-presentacion") === "1") presentar(true);
 const ancla = location.hash.slice(1);
 if (porId.has(ancla)) abrirCaso(ancla, { volar: true });
+else if (ancla === "cronologia" && crono.disponible(2)) abrirCronologia(2);
