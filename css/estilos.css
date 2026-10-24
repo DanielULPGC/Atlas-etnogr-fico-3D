@@ -87,6 +87,7 @@ p { margin: 0; }
 }
 .boton:hover { border-color: var(--accent); }
 .boton:active { transform: scale(0.98); }
+.boton[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .boton.primario { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .boton svg { width: 16px; height: 16px; }
 

@@ -1,4 +1,4 @@
-# Atlas etnográfico (v1.1, manual completo + línea temporal del cap. 2 correlacionada con «Ser humanos»)
+# Atlas etnográfico (v1.2, manual completo + línea temporal del cap. 2 correlacionada con «Ser humanos»)
 
 Recurso web 3D (Three.js 0.160.0) basado en Miller, B. (2011). *Antropología cultural* (5.ª ed.). Pearson Educación.
 

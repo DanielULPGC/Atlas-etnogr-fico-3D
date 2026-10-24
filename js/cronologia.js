@@ -154,8 +154,8 @@ export function crearCronologia(contenedor, { porId, onCaso }) {
 
   const api = {
     disponible: n => !!window.ATLAS.cronologia?.[n],
-    abrir(n) { cap = n; contenedor.hidden = false; contenedor.closest(".escena")?.classList.add("con-cronologia"); pintarCab(); pintar(); },
-    cerrar() { contenedor.hidden = true; contenedor.closest(".escena")?.classList.remove("con-cronologia"); cap = null; },
+    abrir(n) { cap = n; contenedor.hidden = false; document.getElementById("btn-cronologia")?.setAttribute("aria-pressed", "true"); contenedor.closest(".escena")?.classList.add("con-cronologia"); pintarCab(); pintar(); },
+    cerrar() { contenedor.hidden = true; document.getElementById("btn-cronologia")?.setAttribute("aria-pressed", "false"); contenedor.closest(".escena")?.classList.remove("con-cronologia"); cap = null; },
     abierta: () => !contenedor.hidden,
     capitulo: () => cap,
     marcar(id) { seleccion = id; if (cap != null && !contenedor.hidden) pintar(); }

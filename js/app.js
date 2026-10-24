@@ -316,6 +316,9 @@ function presentar(on) {
   $("#btn-presentar span").textContent = on ? "Salir de presentación" : "Presentar";
   guardar("atlas-presentacion", on ? "1" : "0");
 }
+$("#btn-cronologia").addEventListener("click", () => {
+  if (crono.abierta()) crono.cerrar(); else abrirCronologia(2);
+});
 $("#btn-presentar").addEventListener("click", () => presentar(!document.body.classList.contains("modo-presentacion")));
 document.addEventListener("keydown", ev => {
   if (ev.key === "Escape" && crono.abierta()) { crono.cerrar(); return; }
