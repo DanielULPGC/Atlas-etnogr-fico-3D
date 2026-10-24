@@ -409,7 +409,8 @@ ATLAS.registrarModulo({
       conceptos: ["Fitoterapia", "Conocimiento indígena"],
       sintesis: "Entre los tsimané, horticultores y cazadores-recolectores, la salud de los niños se asociaba con el conocimiento botánico de la madre, no con su escolarización ni con la riqueza del hogar. Proteger el acceso a las plantas y el saber local es una cuestión de salud.",
       estudio: { quien: "Thomas McDade et al.", anio: "2007" }, p: "209",
-      pensar: "¿Qué sabes de los efectos de las plantas que consumes?"
+      pensar: "¿Qué sabes de los efectos de las plantas que consumes?",
+      critica: "Referencia del estudio: McDade, T. W. et al. (2007). Ethnobotanical knowledge is associated with indices of child health in the Bolivian Amazon. PNAS, 104(15), 6134-6139. doi:10.1073/pnas.0609123104."
     },
     {
       id: "c7-sherpa", cap: 7, nombre: "Los sherpa", lugar: "Valle del Khumbu (Nepal)", lat: 27.82, lon: 86.71,

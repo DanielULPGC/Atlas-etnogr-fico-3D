@@ -5,6 +5,7 @@
 import { crearGlobo } from "./globo.js";
 import { crearCronologia } from "./cronologia.js";
 
+document.documentElement.lang = "es";
 const A = window.ATLAS;
 const $ = s => document.querySelector(s);
 
@@ -144,6 +145,7 @@ function pintarLeyenda() {
 const ficha = $("#ficha");
 
 function cabecera(etq, titulo, sub) {
+  const an = document.getElementById("anuncio"); if (an) an.textContent = `${etq}: ${titulo}`;
   return el("header", { class: "ficha-cab" }, el("span", { class: "etiqueta" }, etq), el("h2", { tabindex: "-1", id: "ficha-titulo" }, titulo), sub ? el("p", { class: "lugar" }, sub) : null);
 }
 

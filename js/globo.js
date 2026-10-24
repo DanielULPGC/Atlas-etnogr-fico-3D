@@ -139,7 +139,8 @@ export function crearGlobo(contenedor, tierra, { onSeleccion, onHover } = {}) {
     raton.x = ((ev.clientX - r.left) / r.width) * 2 - 1; raton.y = -((ev.clientY - r.top) / r.height) * 2 + 1;
     ray.setFromCamera(raton, camara);
     const toques = [...marcas.values()].filter(m => visible(m)).map(m => m.toque);
-    const hit = ray.intersectObjects(toques, false)[0];
+    const hits = ray.intersectObjects(toques, false);
+    const hit = hits.find(h => !marcas.get(h.object.userData.id)?.atenuado) || hits[0];
     return hit ? hit.object.userData.id : null;
   }
   function visible(m) {
